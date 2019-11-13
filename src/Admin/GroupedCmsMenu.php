@@ -99,7 +99,7 @@ class GroupedCmsMenu extends LeftAndMainExtension
                         $active = true;
                     }
                 }
-
+                
                 $code = str_replace(' ', '_', $group);
                 $result->push(ArrayData::create([
                     'Title' => $this->getTitle($group, $code),
@@ -154,7 +154,7 @@ class GroupedCmsMenu extends LeftAndMainExtension
             return $class::create()->config()->get('menu_icon_class');
         }
 
-        return 'font-icon-' . (!empty($groupSettings[$group]['icon']) ? $groupSettings[$group]['icon'] : '');
+        return (!empty($groupSettings[$group]['icon']) ? $groupSettings[$group]['icon'] : 'font-icon-dot-3');
     }
 
     /**
@@ -175,14 +175,8 @@ class GroupedCmsMenu extends LeftAndMainExtension
             foreach ($groupSettings as $group => $candidates) {
                 $candidates = str_replace('-', '\\', $candidates['children']);
                 $class = $child->MenuItem->controller;
-
                 if (in_array($class, $candidates)) {
-                    $menuItem = $class::create();
-                    $menuItem->setField('ChildTitle', $this->getTitle($group, $class));
-                    $menuItem->setField('Code', str_replace('\\', '-', $class));
-                    $menuItem->setField('IconClass', $this->getIcon($group, $class));
-                    $menuItem->setField('LinkingMode', $child->LinkingMode);
-                    $filtered->push($menuItem);
+                    $filtered->push($child);
                 }
             }
         }
